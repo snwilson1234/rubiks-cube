@@ -9,8 +9,15 @@ import {
 } from './constants.js';
 
 
-/* Cube Class */
+/**
+ * Represents a 3D Rubik's Cube and provides methods for manipulating it.
+ */
 class Cube {
+  /**
+   * Creates a new Cube instance.
+   * 
+   * @param {THREE.Scene} scene - The Three.js scene to which the cube will be added.
+   */
   constructor(scene) {
     this.scene = scene;
     this.cubeletSize = CUBELET_SIZE;
@@ -20,6 +27,11 @@ class Cube {
     this.cubelets = this.makeCube();
   }
 
+  /**
+   * Create the cubelets that make up the Cube object.
+   * 
+   * @returns {boolean} Array of Cubelet objects.
+   */
   makeCube() {
     const cubelets = [];
     for (let x of [-1, 0, 1]) {
@@ -35,6 +47,14 @@ class Cube {
     return cubelets;
   }
 
+ /**
+   * Creates a cubelet, based on input coordinates and pre-determined constants.
+   * 
+   * @param {number} x: The x coordinate of the cubelet to be created.
+   * @param {number} y: The y coordinate of the cubelet to be created.
+   * @param {number} z: The z coordinate of the cubelet to be created.
+   * @returns {boolean} Cubelet object.
+   */
   makeCubelet(x, y, z) {
     const rowMap = {
         [-1]: { key: 'firstRow', label: 'r1' },
@@ -81,6 +101,19 @@ class Cube {
     return new Cubelet(x, y, z, material, cubeletName, this.cubeletSize, this.spacing);
   }
 
+  /**
+   * Rotates a specified face of the cube.
+   *
+   * @param {"R"|"L"|"U"|"D"|"F"|"B"} face - The face to rotate:
+   *   - "R" = Right
+   *   - "L" = Left
+   *   - "U" = Up
+   *   - "D" = Down
+   *   - "F" = Front
+   *   - "B" = Back
+   * @param {boolean} [counter=false] - If true, rotate counter-clockwise; otherwise, clockwise.
+   * @returns {void}
+   */
   rotateFace(face, counter=false) {
     console.log("rotating face:", face);
     const group = new THREE.Group();
@@ -158,6 +191,11 @@ class Cube {
     });
   }
 
+  /**
+   * Check the cubelet positions to determine if in solved state.
+   *
+   * @returns {boolean} True if solved, false if not.
+   */
   checkSolve() {
     const threshold = LOWER_THRESHOLD;
     for (let i = 0; i < this.cubelets.length; i++) {
@@ -178,8 +216,15 @@ class Cube {
 }
 export default Cube;
 
-/* Cublet Class */
+/**
+ * Represents a 3D cubelet instance within the Cube object above.
+ */
 class Cubelet extends THREE.Mesh {
+  /**
+   * Creates a new Cubelet instance.
+   * 
+   * @param {THREE.Scene} scene - The Three.js scene to which the cube will be added.
+   */
   constructor(x, y, z, material, name, cubeletSize, spacing) {
     const geometry = new THREE.BoxGeometry(cubeletSize, cubeletSize, cubeletSize);
     super(geometry, material);
