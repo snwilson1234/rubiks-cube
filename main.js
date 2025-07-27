@@ -518,7 +518,7 @@ const faces = ['R','L','U','D','F','B'];
 let xPos = 10;
 let yPos = 40;
 
-faces.map((face, idx) => {
+faces.map((face, _) => {
   let btn = document.createElement('button');
   btn.innerText = face;
   btn.style.position = "absolute";
@@ -537,8 +537,6 @@ faces.map((face, idx) => {
   yPos += 40;
   xPos -= 40;
 });
-
-
 
 // Render loop
 function animate() {
