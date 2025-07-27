@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Cube from './Cube.js';
+import { FACES } from './constants.js';
 
 // Scene setup
 const scene = new THREE.Scene();
@@ -22,11 +23,10 @@ scene.add(ambientLight);
 const cube = new Cube(scene);
 scene.add(cube.cubeGroup);
 
-const faces = ['R','L','U','D','F','B'];
 let xPos = 10;
 let yPos = 40;
 
-faces.map((face, _) => {
+FACES.map((face, _) => {
   let btn = document.createElement('button');
   btn.innerText = face;
   btn.style.position = "absolute";
@@ -45,6 +45,15 @@ faces.map((face, _) => {
   yPos += 40;
   xPos -= 40;
 });
+
+let scrambleBtn = document.createElement("button");
+scrambleBtn.innerText = "Scramble";
+scrambleBtn.style.position = "absolute";
+scrambleBtn.style.top = "300px"
+scrambleBtn.style.left = "10px";
+scrambleBtn.onclick = () => cube.scramble(10);
+document.body.appendChild(scrambleBtn);
+
 
 // Render loop
 function animate() {

@@ -5,7 +5,8 @@ import {
   CUBE_MATERIALS, 
   CUBE_SPACING,
   LOWER_THRESHOLD,
-  UPPER_THRESHOLD
+  UPPER_THRESHOLD,
+  FACES
 } from './constants.js';
 
 
@@ -212,6 +213,22 @@ class Cube {
       }
     }
     return true;
+  }
+
+  scramble(numTurns) {
+    const getRandomInt = (max) => {
+      return Math.floor(Math.random() * max);
+    };
+
+    let randomFace, randomDirection, randInt;
+    for (let i = 0; i < numTurns; i++) {
+      setTimeout(() => {
+        randInt = getRandomInt(FACES.length);
+        randomFace = FACES[randInt];
+        randomDirection = randInt > Math.floor(FACES / 2) ? true : false;
+        this.rotateFace(randomFace, randomDirection);
+      }, 600 * i);
+    }
   }
 }
 export default Cube;
