@@ -3,7 +3,9 @@ import gsap from 'gsap';
 import {
   CUBELET_SIZE, 
   CUBE_MATERIALS, 
-  CUBE_SPACING
+  CUBE_SPACING,
+  LOWER_THRESHOLD,
+  UPPER_THRESHOLD
 } from './constants.js';
 
 
@@ -14,22 +16,22 @@ class Cube {
     this.cubeletSize = CUBELET_SIZE;
     this.spacing = CUBE_SPACING;
     this.cubeGroup = new THREE.Group();
+    this.solveState = [];
     this.cubelets = this.makeCube();
   }
 
   makeCube() {
     const cubelets = [];
-
     for (let x of [-1, 0, 1]) {
       for (let y of [-1, 0, 1]) {
         for (let z of [-1, 0, 1]) {
           const cubelet = this.makeCubelet(x, y, z);
           this.cubeGroup.add(cubelet);
           cubelets.push(cubelet);
+          this.solveState.push( new THREE.Vector3(x,y,z) );
         }
       }
     }
-
     return cubelets;
   }
 
@@ -62,16 +64,18 @@ class Cube {
     };
 
     if (x === x && y === 0 && z === 0) {
-        material = CUBE_MATERIALS[rowKey]['center'];
-        cubeletName = `${rowLabel}c`;
-    } else if (isCorner(y) && isCorner(z)) {
-        const idx = getCornerIndex();
-        material = CUBE_MATERIALS[rowKey]['corners'][idx];
-        cubeletName = `${rowLabel}c${idx}`;
-    } else {
-        const idx = getSideIndex();
-        material = CUBE_MATERIALS[rowKey]['sides'][idx];
-        cubeletName = `${rowLabel}s${idx}`;
+      material = CUBE_MATERIALS[rowKey]['center'];
+      cubeletName = `${rowLabel}c`;
+    } 
+    else if (isCorner(y) && isCorner(z)) {
+      const idx = getCornerIndex();
+      material = CUBE_MATERIALS[rowKey]['corners'][idx];
+      cubeletName = `${rowLabel}c${idx}`;
+    } 
+    else {
+      const idx = getSideIndex();
+      material = CUBE_MATERIALS[rowKey]['sides'][idx];
+      cubeletName = `${rowLabel}s${idx}`;
     }
 
     return new Cubelet(x, y, z, material, cubeletName, this.cubeletSize, this.spacing);
@@ -83,9 +87,6 @@ class Cube {
     this.cubeGroup.add(group);
     let rotateRow;
     let rotateAxis;
-
-    const lowerThreshold = 0.1;
-    const upperThreshold = 2.09;
 
     switch (face) {
       case "R":
@@ -122,17 +123,17 @@ class Cube {
       const answer = Math.abs(cubelet.position[rotateAxis] - CUBE_SPACING);
       console.log("answer:", answer);
       if (rotateRow == 3) {
-        if (answer < lowerThreshold) {
+        if (answer < LOWER_THRESHOLD) {
           group.attach(cubelet);
         }
       }
       else if (rotateRow == 2) {
-        if (answer > lowerThreshold && answer < upperThreshold) {
+        if (answer > LOWER_THRESHOLD && answer < UPPER_THRESHOLD) {
           group.attach(cubelet);
         }
       }
       else {
-        if (answer >= upperThreshold) {
+        if (answer >= UPPER_THRESHOLD) {
           group.attach(cubelet);
         }
       }
@@ -152,15 +153,27 @@ class Cube {
         });
 
         this.scene.remove(group);
-        this.checkSolve();
+        console.log(this.checkSolve() ? "cube is solved." : "cube is not solved.");
       }
     });
   }
 
   checkSolve() {
-    this.cubelets.forEach((cubelet, idx) => {
-      console.log("cubelet", cubelet.name, "new position:", cubelet.position);
-    });
+    const threshold = LOWER_THRESHOLD;
+    for (let i = 0; i < this.cubelets.length; i++) {
+      const cubelet = this.cubelets[i];
+      const expected = this.solveState[i];
+      const actual = cubelet.position;
+
+      const dx = Math.abs(expected.x - actual.x);
+      const dy = Math.abs(expected.y - actual.y);
+      const dz = Math.abs(expected.z - actual.z);
+
+      if (dx > threshold || dy > threshold || dz > threshold) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 export default Cube;
