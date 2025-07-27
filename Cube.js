@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
 
-
-const colors = {
+/* Constants and Helpers */
+const CUBELET_SIZE = 0.95;
+const CUBE_SPACING = 1.05;
+const CUBE_COLORS = {
   red: 0xd11515,
   orange: 0xde7309,
   yellow: 0xffcf0d,
@@ -12,10 +14,8 @@ const colors = {
   black: 0x000000,
   white: 0xffffff
 };
-const mat = (colorName) => new THREE.MeshBasicMaterial({ color: colors[colorName] });
+const mat = (colorName) => new THREE.MeshBasicMaterial({ color: CUBE_COLORS[colorName] });
 const makeRow = (faces) => faces.map(row => row.map(mat));
-const CUBELET_SIZE = 0.95;
-const CUBE_SPACING = 1.05;
 const CUBE_MATERIALS = {
   firstRow: {
     corners: makeRow([
@@ -31,12 +31,12 @@ const CUBE_MATERIALS = {
       ['black','red','yellow','black','black','black']
     ]),
     center: [
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['red'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] })
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['red'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] })
     ]
   },
   secondRow: {
@@ -53,12 +53,12 @@ const CUBE_MATERIALS = {
       ['black','black','yellow','black','black','black']
     ]),
     center: [
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] })
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] })
     ]
   },
   thirdRow: {
@@ -75,16 +75,17 @@ const CUBE_MATERIALS = {
       ['orange','black','yellow','black','black','black']
     ]),
     center: [
-      new THREE.MeshBasicMaterial({ color: colors['orange'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      new THREE.MeshBasicMaterial({ color: colors['black'] })
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['orange'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] }),
+      new THREE.MeshBasicMaterial({ color: CUBE_COLORS['black'] })
     ]
   }
 };
 
+/* Cube Class */
 class Cube {
   constructor(scene) {
     this.scene = scene;
@@ -240,9 +241,9 @@ class Cube {
     });
   }
 }
-
 export default Cube;
 
+/* Cublet Class */
 class Cubelet extends THREE.Mesh {
   constructor(x, y, z, material, name, cubeletSize, spacing) {
     const geometry = new THREE.BoxGeometry(cubeletSize, cubeletSize, cubeletSize);
