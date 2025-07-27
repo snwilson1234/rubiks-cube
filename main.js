@@ -40,76 +40,23 @@ const colors = {
   white: 0xffffff
 };
 
-const allMaterials = {
+const mat = (colorName) => new THREE.MeshBasicMaterial({ color: colors[colorName] });
+const makeRow = (faces) => faces.map(row => row.map(mat));
+
+const cubeMaterials = {
   firstRow: {
-    corners: [
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['red'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['white'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['blue'] })
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['red'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['white'] }),
-        new THREE.MeshBasicMaterial({ color: colors['green'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] })
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['red'] }),
-        new THREE.MeshBasicMaterial({ color: colors['yellow'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['blue'] })
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['red'] }),
-        new THREE.MeshBasicMaterial({ color: colors['yellow'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['green'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] })
-      ]
-    ],
-    sides: [
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['red'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['white'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['red'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['blue'] }),
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['red'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['green'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['red'] }),
-        new THREE.MeshBasicMaterial({ color: colors['yellow'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }), 
-      ]
-    ],
+    corners: makeRow([
+      ['black','red','black','white','black','blue'],
+      ['black','red','black','white','green','black'],
+      ['black','red','yellow','black','black','blue'],
+      ['black','red','yellow','black','green','black']
+    ]),
+    sides: makeRow([
+      ['black','red','black','white','black','black'],
+      ['black','red','black','black','black','blue'],
+      ['black','red','black','black','green','black'],
+      ['black','red','yellow','black','black','black']
+    ]),
     center: [
       new THREE.MeshBasicMaterial({ color: colors['black'] }),
       new THREE.MeshBasicMaterial({ color: colors['red'] }),
@@ -120,74 +67,18 @@ const allMaterials = {
     ]
   },
   secondRow: {
-    corners: [
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['white'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['blue'] })
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['white'] }),
-        new THREE.MeshBasicMaterial({ color: colors['green'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] })
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['yellow'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['blue'] })
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['yellow'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['green'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] })
-      ]
-    ],
-    sides: [
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['white'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['blue'] }),
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['green'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['yellow'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }), 
-      ]
-    ],
+    corners: makeRow([
+      ['black','black','black','white','black','blue'],
+      ['black','black','black','white','green','black'],
+      ['black','black','yellow','black','black','blue'],
+      ['black','black','yellow','black','green','black']
+    ]),
+    sides: makeRow([
+      ['black','black','black','white','black','black'],
+      ['black','black','black','black','black','blue'],
+      ['black','black','black','black','green','black'],
+      ['black','black','yellow','black','black','black']
+    ]),
     center: [
       new THREE.MeshBasicMaterial({ color: colors['black'] }),
       new THREE.MeshBasicMaterial({ color: colors['black'] }),
@@ -198,74 +89,18 @@ const allMaterials = {
     ]
   },
   thirdRow: {
-    corners: [
-      [
-        new THREE.MeshBasicMaterial({ color: colors['orange'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['white'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['blue'] })
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['orange'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['white'] }),
-        new THREE.MeshBasicMaterial({ color: colors['green'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] })
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['orange'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['yellow'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['blue'] })
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['orange'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['yellow'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['green'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] })
-      ]
-    ],
-    sides: [
-      [
-        new THREE.MeshBasicMaterial({ color: colors['orange'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['white'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['orange'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['blue'] }),
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['orange'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['green'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-      ],
-      [
-        new THREE.MeshBasicMaterial({ color: colors['orange'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['yellow'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }),
-        new THREE.MeshBasicMaterial({ color: colors['black'] }), 
-      ]
-    ],
+    corners: makeRow([
+      ['orange','black','black','white','black','blue'],
+      ['orange','black','black','white','green','black'],
+      ['orange','black','yellow','black','black','blue'],
+      ['orange','black','yellow','black','green','black']
+    ]),
+    sides: makeRow([
+      ['orange','black','black','white','black','black'],
+      ['orange','black','black','black','black','blue'],
+      ['orange','black','black','black','green','black'],
+      ['orange','black','yellow','black','black','black']
+    ]),
     center: [
       new THREE.MeshBasicMaterial({ color: colors['orange'] }),
       new THREE.MeshBasicMaterial({ color: colors['black'] }),
@@ -277,7 +112,6 @@ const allMaterials = {
   }
 };
 
-
 for (let x of [-1, 0, 1]) {
   for (let y of [-1, 0, 1]) {
     for (let z of [-1, 0, 1]) {
@@ -287,44 +121,44 @@ for (let x of [-1, 0, 1]) {
       if (x == -1) {
         if (y == -1) {
           if (z == -1) {
-            material = allMaterials['firstRow']['corners'][0];
+            material = cubeMaterials['firstRow']['corners'][0];
             cubeletName = "r1c0"; 
           }
           else if (z == 0) {
-            material = allMaterials['firstRow']['sides'][0];
+            material = cubeMaterials['firstRow']['sides'][0];
             cubeletName = "r1s0";
           } 
           else {
-            material = allMaterials['firstRow']['corners'][1];
+            material = cubeMaterials['firstRow']['corners'][1];
             cubeletName = "r1c1";
           }
         }
         else if (y == 0) {
           if (z == -1) {
-            material = allMaterials['firstRow']['sides'][1];
+            material = cubeMaterials['firstRow']['sides'][1];
             cubeletName = "r1s1";
           }
           else if (z == 0) {
-            material = allMaterials['firstRow']['center'];
+            material = cubeMaterials['firstRow']['center'];
             cubeletName = "r1c";
           } 
           else {
-            material = allMaterials['firstRow']['sides'][2];
+            material = cubeMaterials['firstRow']['sides'][2];
             cubeletName = "r1s2";
           }
         }
         else {
           if (z == -1) {
-            material = allMaterials['firstRow']['corners'][2];
+            material = cubeMaterials['firstRow']['corners'][2];
             cubeletName = "r1c2";
 
           }
           else if (z == 0) {
-            material = allMaterials['firstRow']['sides'][3];
+            material = cubeMaterials['firstRow']['sides'][3];
             cubeletName = "r1s3";
           } 
           else {
-            material = allMaterials['firstRow']['corners'][3];
+            material = cubeMaterials['firstRow']['corners'][3];
             cubeletName = "r1c3";
           }
         }
@@ -332,43 +166,43 @@ for (let x of [-1, 0, 1]) {
       else if (x == 0) {
         if (y == -1) {
           if (z == -1) {
-            material = allMaterials['secondRow']['corners'][0];
+            material = cubeMaterials['secondRow']['corners'][0];
             cubeletName = "r2c0";
           }
           else if (z == 0) {
-            material = allMaterials['secondRow']['sides'][0];
+            material = cubeMaterials['secondRow']['sides'][0];
             cubeletName = "r2s0"; 
           } 
           else {
-            material = allMaterials['secondRow']['corners'][1];
+            material = cubeMaterials['secondRow']['corners'][1];
             cubeletName = "r2c1";
           }
         }
         else if (y == 0) {
           if (z == -1) {
-            material = allMaterials['secondRow']['sides'][1]; 
+            material = cubeMaterials['secondRow']['sides'][1]; 
             cubeletName = "r2s1";
           }
           else if (z == 0) {
-            material = allMaterials['secondRow']['center']; 
+            material = cubeMaterials['secondRow']['center']; 
             cubeletName = "r2c";
           } 
           else {
-            material = allMaterials['secondRow']['sides'][2];
+            material = cubeMaterials['secondRow']['sides'][2];
             cubeletName = "r2s2";
           }
         }
         else {
           if (z == -1) {
-            material = allMaterials['secondRow']['corners'][2]; 
+            material = cubeMaterials['secondRow']['corners'][2]; 
             cubeletName = "r2c2";
           }
           else if (z == 0) {
-            material = allMaterials['secondRow']['sides'][3]; 
+            material = cubeMaterials['secondRow']['sides'][3]; 
             cubeletName = "r2s3";
           } 
           else {
-            material = allMaterials['secondRow']['corners'][3];
+            material = cubeMaterials['secondRow']['corners'][3];
             cubeletName = "r2c3";
           }
         }
@@ -376,43 +210,43 @@ for (let x of [-1, 0, 1]) {
       else {
         if (y == -1) {
           if (z == -1) {
-            material = allMaterials['thirdRow']['corners'][0];
+            material = cubeMaterials['thirdRow']['corners'][0];
             cubeletName = "r3c0";
           }
           else if (z == 0) {
-            material = allMaterials['thirdRow']['sides'][0];
+            material = cubeMaterials['thirdRow']['sides'][0];
             cubeletName = "r3s0";
           } 
           else {
-            material = allMaterials['thirdRow']['corners'][1];
+            material = cubeMaterials['thirdRow']['corners'][1];
             cubeletName = "r3c1";
           }
         }
         else if (y == 0) {
           if (z == -1) {
-            material = allMaterials['thirdRow']['sides'][1];
+            material = cubeMaterials['thirdRow']['sides'][1];
             cubeletName = "r3s1";
           }
           else if (z == 0) {
-            material = allMaterials['thirdRow']['center'];
+            material = cubeMaterials['thirdRow']['center'];
             cubeletName = "r3c";
           } 
           else {
-            material = allMaterials['thirdRow']['sides'][2];
+            material = cubeMaterials['thirdRow']['sides'][2];
             cubeletName = "r3s2";
           }
         }
         else {
           if (z == -1) {
-            material = allMaterials['thirdRow']['corners'][2];
+            material = cubeMaterials['thirdRow']['corners'][2];
             cubeletName = "r3c2";
           }
           else if (z == 0) {
-            material = allMaterials['thirdRow']['sides'][3];
+            material = cubeMaterials['thirdRow']['sides'][3];
             cubeletName = "r3s3";
           } 
           else {
-            material = allMaterials['thirdRow']['corners'][3];
+            material = cubeMaterials['thirdRow']['corners'][3];
             cubeletName = "r3c3";
           }
         }
