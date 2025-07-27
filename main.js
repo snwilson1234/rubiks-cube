@@ -427,22 +427,73 @@ for (let x of [-1, 0, 1]) {
 }
 
 // Face Rotation (e.g. Right face)
-function rotateFace(axis, value) {
+function rotateFace(face, value, counter=false) {
+  console.log("rotating face:", face);
   const group = new THREE.Group();
   cubeGroup.add(group);
+  let rotateRow;
+  let rotateAxis;
 
-  const threshold = 0.1;
+  const lowerThreshold = 0.1;
+  const upperThreshold = 2.09;
+
+  switch (face) {
+    case "R":
+      rotateRow = 3;
+      rotateAxis = "x";
+      break;
+    case "L":
+      rotateRow = 1
+      rotateAxis = "x"
+      break;
+    case "U":
+      rotateRow = 3;
+      rotateAxis = "y"
+      break;
+    case "D":
+      rotateRow = 1;
+      rotateAxis = "y"
+      break;
+    case "B":
+      rotateRow = 1;
+      rotateAxis = "z"
+      break;
+    case "F":
+      rotateRow = 3;
+      rotateAxis = "z"
+      break;
+    default:
+      rotateRow = 2;
+      rotateAxis = "x";
+      break;
+  }
 
   cubelets.forEach(cubelet => {
-    if (Math.abs(cubelet.position[axis] - value) < threshold) {
-      group.attach(cubelet); // Important: re-parent preserves world position
+    const answer = Math.abs(cubelet.position[rotateAxis] - value);
+    console.log("answer:", answer);
+    if (rotateRow == 3) {
+      if (answer < lowerThreshold) {
+        group.attach(cubelet);
+      }
+    }
+    else if (rotateRow == 2) {
+      if (answer > lowerThreshold && answer < upperThreshold) {
+        group.attach(cubelet);
+      }
+    }
+    else {
+      if (answer >= upperThreshold) {
+        group.attach(cubelet);
+      }
     }
   });
 
-  const angleRad = THREE.MathUtils.degToRad(90);
+  let angle = counter ? -90 : 90;
+
+  const angleRad = THREE.MathUtils.degToRad(angle);
 
   gsap.to(group.rotation, {
-    [axis]: angleRad,
+    [rotateAxis]: angleRad,
     duration: 0.5,
     onComplete: () => {
       // Apply final transforms to cubelets
@@ -462,14 +513,32 @@ function rotateFace(axis, value) {
 cubelets.forEach((cubelet, idx) => {
   console.log("cubelet", cubelet.name, "position:", cubelet.position);
 });
-// Test button to rotate R face
-const btn = document.createElement('button');
-btn.innerText = "Rotate R (Right Face)";
-btn.style.position = "absolute";
-btn.style.top = "10px";
-btn.style.left = "10px";
-btn.onclick = () => rotateFace('x', spacing);
-document.body.appendChild(btn);
+
+const faces = ['R','L','U','D','F','B'];
+let xPos = 10;
+let yPos = 40;
+
+faces.map((face, idx) => {
+  let btn = document.createElement('button');
+  btn.innerText = face;
+  btn.style.position = "absolute";
+  btn.style.top = String(yPos) + "px";
+  btn.style.left = String(xPos) + "px";
+  btn.onclick = () => rotateFace(face, spacing);
+  document.body.appendChild(btn);
+  xPos += 40;
+  let primeBtn = document.createElement('button');
+  primeBtn.innerText = face + "'";
+  primeBtn.style.position = "absolute";
+  primeBtn.style.top = String(yPos) + "px";
+  primeBtn.style.left = String(xPos) + "px";
+  primeBtn.onclick = () => rotateFace(face, spacing, true);
+  document.body.appendChild(primeBtn);
+  yPos += 40;
+  xPos -= 40;
+});
+
+
 
 // Render loop
 function animate() {
