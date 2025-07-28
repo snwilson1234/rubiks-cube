@@ -1,0 +1,41 @@
+button {
+  background-color: black;
+  color: white;
+  border: solid white 1px;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 16px;
+  min-width: 50px;
+  height: 40px;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: rgb(68, 67, 67);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
+}
+
+.button-container {
+  background-color: blue;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 300px;
+  height: auto;
+  gap: 8px;
+  border-radius: 20px;
+  padding: 8px;
+}
+
+.button-container-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  gap: 8px;
+}

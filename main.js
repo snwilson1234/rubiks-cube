@@ -23,36 +23,17 @@ scene.add(ambientLight);
 const cube = new Cube(scene);
 scene.add(cube.cubeGroup);
 
-let xPos = 10;
-let yPos = 40;
-
 FACES.map((face, _) => {
-  let btn = document.createElement('button');
-  btn.innerText = face;
-  btn.style.position = "absolute";
-  btn.style.top = String(yPos) + "px";
-  btn.style.left = String(xPos) + "px";
+  let btn = document.getElementById(face);
+  let primeBtn = document.getElementById(face + "prime");
+
   btn.onclick = () => cube.rotateFace(face);
-  document.body.appendChild(btn);
-  xPos += 40;
-  let primeBtn = document.createElement('button');
-  primeBtn.innerText = face + "'";
-  primeBtn.style.position = "absolute";
-  primeBtn.style.top = String(yPos) + "px";
-  primeBtn.style.left = String(xPos) + "px";
   primeBtn.onclick = () => cube.rotateFace(face, true);
-  document.body.appendChild(primeBtn);
-  yPos += 40;
-  xPos -= 40;
 });
 
-let scrambleBtn = document.createElement("button");
-scrambleBtn.innerText = "Scramble";
-scrambleBtn.style.position = "absolute";
-scrambleBtn.style.top = "300px"
-scrambleBtn.style.left = "10px";
+
+let scrambleBtn = document.getElementById("scrambleBtn");
 scrambleBtn.onclick = () => cube.scramble(10);
-document.body.appendChild(scrambleBtn);
 
 
 // Render loop
