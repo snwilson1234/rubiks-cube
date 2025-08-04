@@ -65,7 +65,8 @@ class Cube {
 
     const { key: rowKey, label: rowLabel } = rowMap[x];
 
-    let material, cubeletName;
+    let sideMaterialObjects, cubeletName, cubeletType;
+    let cubeletColors = [];
 
     const isCorner = (coord) => coord !== 0;
     const getCornerIndex = () => {
@@ -85,21 +86,37 @@ class Cube {
     };
 
     if (x === x && y === 0 && z === 0) {
-      material = CUBE_MATERIALS[rowKey]['center'];
+      sideMaterialObjects = CUBE_MATERIALS[rowKey]['center'];
       cubeletName = `${rowLabel}c`;
+      cubeletType = 'center';
     } 
     else if (isCorner(y) && isCorner(z)) {
       const idx = getCornerIndex();
-      material = CUBE_MATERIALS[rowKey]['corners'][idx];
+      sideMaterialObjects = CUBE_MATERIALS[rowKey]['corners'][idx];
       cubeletName = `${rowLabel}c${idx}`;
+      cubeletType = 'corner';
     } 
     else {
       const idx = getSideIndex();
-      material = CUBE_MATERIALS[rowKey]['sides'][idx];
+      sideMaterialObjects = CUBE_MATERIALS[rowKey]['sides'][idx];
       cubeletName = `${rowLabel}s${idx}`;
+      cubeletType = 'side';
+    }
+    console.log(sideMaterialObjects);
+    console.log("material 0 color:", sideMaterialObjects[0]['color']);
+    
+    for (let side of sideMaterialObjects) {
+      if (side['color'] !== 'black') {
+        cubeletColors.push(side['color'][0].toUpperCase())
+      }
     }
 
-    return new Cubelet(x, y, z, material, cubeletName, this.cubeletSize, this.spacing);
+    let sideMaterials = [];
+    for (let sideMaterial of sideMaterialObjects) { 
+      sideMaterials.push(sideMaterial['material']);
+    }
+
+    return new Cubelet(x, y, z, sideMaterials, cubeletName, cubeletType, cubeletColors, this.cubeletSize, this.spacing);
   }
 
   /**
@@ -242,10 +259,13 @@ class Cubelet extends THREE.Mesh {
    * 
    * @param {THREE.Scene} scene - The Three.js scene to which the cube will be added.
    */
-  constructor(x, y, z, material, name, cubeletSize, spacing) {
+  constructor(x, y, z, material, name, type, colors, cubeletSize, spacing) {
     const geometry = new THREE.BoxGeometry(cubeletSize, cubeletSize, cubeletSize);
     super(geometry, material);
     this.name = name;
+    this.type = type;
+    this.colors = colors.join("");
     this.position.set(x * spacing, y * spacing, z * spacing);
+    console.log(`making cubelet: ${this.name} \nwith colors: ${this.colors} \ntype: ${this.type}`);
   }
 }
