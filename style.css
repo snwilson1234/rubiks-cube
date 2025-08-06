@@ -24,7 +24,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 300px;
+  width: 200px;
   height: auto;
   gap: 8px;
   border-radius: 20px;
@@ -36,6 +36,5 @@ button:hover {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 300px;
   gap: 8px;
 }

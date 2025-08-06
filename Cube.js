@@ -2,11 +2,16 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import {
   CUBELET_SIZE, 
-  CUBE_MATERIALS, 
   CUBE_SPACING,
+  CENTER_COORDS,
+  SIDE_COORDS,
+  CORNER_COORDS,
   LOWER_THRESHOLD,
   UPPER_THRESHOLD,
-  FACES
+  FACES,
+  CENTER_MATERIALS,
+  SIDE_MATERIALS,
+  CORNER_MATERIALS
 } from './constants.js';
 
 
@@ -57,63 +62,34 @@ class Cube {
    * @returns {boolean} Cubelet object.
    */
   makeCubelet(x, y, z) {
-    const rowMap = {
-        [-1]: { key: 'firstRow', label: 'r1' },
-        [0]:  { key: 'secondRow', label: 'r2' },
-        [1]:  { key: 'thirdRow', label: 'r3' },
-    };
-
-    const { key: rowKey, label: rowLabel } = rowMap[x];
-
-    let sideMaterialObjects, cubeletName, cubeletType;
+    let cubeletName, cubeletType;
     let cubeletColors = [];
 
-    const isCorner = (coord) => coord !== 0;
-    const getCornerIndex = () => {
-        if (y === -1 && z === -1) return 0;
-        if (y === -1 && z === 1) return 1;
-        if (y === 1 && z === -1) return 2;
-        if (y === 1 && z === 1) return 3;
-        return -1; // not a corner
-    };
+    let indexString = `${x},${y},${z}`;
 
-    const getSideIndex = () => {
-        if (y === -1 && z === 0) return 0;
-        if (y === 0 && z === -1) return 1;
-        if (y === 0 && z === 1)  return 2;
-        if (y === 1 && z === 0)  return 3;
-        return -1; // not a side
-    };
-
-    if (x === x && y === 0 && z === 0) {
-      sideMaterialObjects = CUBE_MATERIALS[rowKey]['center'];
-      cubeletName = `${rowLabel}c`;
-      cubeletType = 'center';
-    } 
-    else if (isCorner(y) && isCorner(z)) {
-      const idx = getCornerIndex();
-      sideMaterialObjects = CUBE_MATERIALS[rowKey]['corners'][idx];
-      cubeletName = `${rowLabel}c${idx}`;
-      cubeletType = 'corner';
-    } 
-    else {
-      const idx = getSideIndex();
-      sideMaterialObjects = CUBE_MATERIALS[rowKey]['sides'][idx];
-      cubeletName = `${rowLabel}s${idx}`;
-      cubeletType = 'side';
-    }
-    console.log(sideMaterialObjects);
-    console.log("material 0 color:", sideMaterialObjects[0]['color']);
+    let colorId;
+    let testMat;
     
-    for (let side of sideMaterialObjects) {
-      if (side['color'] !== 'black') {
-        cubeletColors.push(side['color'][0].toUpperCase())
-      }
+    if (indexString in CORNER_COORDS) {
+      colorId = CORNER_COORDS[indexString];
+      testMat = CORNER_MATERIALS[colorId];
     }
+    else if (indexString in SIDE_COORDS) {
+      colorId = SIDE_COORDS[indexString];
+      testMat = SIDE_MATERIALS[colorId];
+    }
+    else {
+      colorId = CENTER_COORDS[indexString];
+      testMat = CENTER_MATERIALS[colorId];
+    }
+
+    console.log("color id:", colorId);
+    console.log("testmat:", testMat);
+    console.log("type testmat:", typeof(testMat));
 
     let sideMaterials = [];
-    for (let sideMaterial of sideMaterialObjects) { 
-      sideMaterials.push(sideMaterial['material']);
+    for (let i = 0; i < testMat.length; i++) { 
+      sideMaterials.push(testMat[i]['material']);
     }
 
     return new Cubelet(x, y, z, sideMaterials, cubeletName, cubeletType, cubeletColors, this.cubeletSize, this.spacing);
