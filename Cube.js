@@ -63,13 +63,9 @@ class Cube {
    * @returns {boolean} Cubelet object.
    */
   makeCubelet(x, y, z) {
-    let cubeletType;
-
+    let cubeletType, colorId, material;
     let indexString = `${x},${y},${z}`;
 
-    let colorId;
-    let material;
-    
     if (indexString in CENTER_COORDS) {
       colorId = CENTER_COORDS[indexString];
       material = CENTER_MATERIALS[colorId];
@@ -114,7 +110,7 @@ class Cube {
    * @returns {void}
    */
   rotateFace(face, counter=false) {
-    console.log("rotating face:", face);
+    console.log("rotating face:", face, counter ? "counter-clockwise" : "clockwise");
     const group = new THREE.Group();
     this.cubeGroup.add(group);
     let rotateRow;
@@ -153,7 +149,6 @@ class Cube {
 
     this.cubelets.forEach(cubelet => {
       const answer = Math.abs(cubelet.position[rotateAxis] - CUBE_SPACING);
-      console.log("answer:", answer);
       if (rotateRow == 3) {
         if (answer < LOWER_THRESHOLD) {
           group.attach(cubelet);
@@ -171,7 +166,7 @@ class Cube {
       }
     });
 
-    let angle = counter ? -90 : 90;
+    let angle = counter ? 90 : -90;
 
     const angleRad = THREE.MathUtils.degToRad(angle);
 
@@ -213,7 +208,13 @@ class Cube {
     return true;
   }
 
-  scramble(numTurns) {
+  /**
+   * Scramble the cube.
+   *
+   * @param {number} numTurns - Number of turns in the scramble to perform.
+   * @returns {boolean} True if solved, false if not.
+   */
+  performScramble(numTurns) {
     const getRandomInt = (max) => {
       return Math.floor(Math.random() * max);
     };
@@ -223,7 +224,8 @@ class Cube {
       setTimeout(() => {
         randInt = getRandomInt(FACES.length);
         randomFace = FACES[randInt];
-        randomDirection = randInt > Math.floor(FACES / 2) ? true : false;
+        console.log(randInt);
+        randomDirection = randInt > Math.floor(FACES.length / 2) ? true : false;
         this.rotateFace(randomFace, randomDirection);
       }, 600 * i);
     }

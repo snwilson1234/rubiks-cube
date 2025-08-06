@@ -33,7 +33,7 @@ FACES.map((face, _) => {
 
 
 let scrambleBtn = document.getElementById("scrambleBtn");
-scrambleBtn.onclick = () => cube.scramble(10);
+scrambleBtn.onclick = () => cube.performScramble(10);
 
 
 // Render loop
