@@ -35,6 +35,9 @@ FACES.map((face, _) => {
 let scrambleBtn = document.getElementById("scrambleBtn");
 scrambleBtn.onclick = () => cube.performScramble(10);
 
+let beginnerSolveBtn = document.getElementById("beginnerSolveBtn");
+beginnerSolveBtn.onclick = () => cube.performBeginnerSolve();
+
 
 // Render loop
 function animate() {

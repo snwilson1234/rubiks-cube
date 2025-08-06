@@ -12,7 +12,8 @@ import {
   LOWER_THRESHOLD,
   UPPER_THRESHOLD,
   FACES,
-  CUBELET_TYPES
+  CUBELET_TYPES,
+  CUBELET_COLORS
 } from './constants.js';
 
 
@@ -69,17 +70,17 @@ class Cube {
     if (indexString in CENTER_COORDS) {
       colorId = CENTER_COORDS[indexString];
       material = CENTER_MATERIALS[colorId];
-      cubeletType = "center"
+      cubeletType = CUBELET_TYPES['center'];
     }
     else if (indexString in SIDE_COORDS) {
       colorId = SIDE_COORDS[indexString];
       material = SIDE_MATERIALS[colorId];
-      cubeletType = "side";
+      cubeletType = CUBELET_TYPES['side'];
     }
     else {
       colorId = CORNER_COORDS[indexString];
       material = CORNER_MATERIALS[colorId];
-      cubeletType = "corner";
+      cubeletType = CUBELET_TYPES['corner'];
     }
 
     let sideMaterials = [];
@@ -229,6 +230,21 @@ class Cube {
         this.rotateFace(randomFace, randomDirection);
       }, 600 * i);
     }
+  }
+
+  performBeginnerSolve() {
+    console.log("performing beginner solve...");
+
+    // step 1: find cubelets with yellow
+    for (let cubelet of this.cubelets) {
+      console.log(cubelet.name, cubelet.colors);
+      console.log(cubelet.name in CUBELET_COLORS['sides']);
+      if (CUBELET_COLORS['sides'].includes(cubelet.name) && cubelet.colors.includes("Y")) {
+        console.log('found yellow side:' , cubelet);
+      }
+    }
+
+    // step 2: 
   }
 }
 export default Cube;

@@ -109,6 +109,41 @@ const CUBELET_TYPES = {
   side: "SIDE",
   corner: "CORNER"
 };
+const CUBELET_COLORS = {
+  centers: [
+    "red",
+    "yellow",
+    "green",
+    "orange",
+    "blue",
+    "white",
+    "black"
+  ],
+  sides: [
+    "red_yellow",
+    "red_blue",
+    "red_green",
+    "red_white",
+    "yellow_green",
+    "yellow_blue",
+    "orange_yellow",
+    "orange_blue",
+    "orange_green",
+    "orange_white",
+    "white_green",
+    "white_blue"
+  ],
+  corners: [
+    "red_yellow_green",
+    "red_white_green",
+    "red_yellow_blue",
+    "red_white_blue",
+    "orange_yellow_green",
+    "orange_yellow_blue",
+    "orange_white_green",
+    "orange_white_blue"
+  ]
+};
 
 export {
   CUBELET_SIZE,
@@ -126,5 +161,6 @@ export {
   UPPER_THRESHOLD,
 
   FACES,
-  CUBELET_TYPES
+  CUBELET_TYPES,
+  CUBELET_COLORS
 };
