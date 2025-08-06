@@ -6,12 +6,13 @@ import {
   CENTER_COORDS,
   SIDE_COORDS,
   CORNER_COORDS,
+  CENTER_MATERIALS,
+  SIDE_MATERIALS,
+  CORNER_MATERIALS,
   LOWER_THRESHOLD,
   UPPER_THRESHOLD,
   FACES,
-  CENTER_MATERIALS,
-  SIDE_MATERIALS,
-  CORNER_MATERIALS
+  CUBELET_TYPES
 } from './constants.js';
 
 
@@ -62,37 +63,41 @@ class Cube {
    * @returns {boolean} Cubelet object.
    */
   makeCubelet(x, y, z) {
-    let cubeletName, cubeletType;
-    let cubeletColors = [];
+    let cubeletType;
 
     let indexString = `${x},${y},${z}`;
 
     let colorId;
-    let testMat;
+    let material;
     
-    if (indexString in CORNER_COORDS) {
-      colorId = CORNER_COORDS[indexString];
-      testMat = CORNER_MATERIALS[colorId];
+    if (indexString in CENTER_COORDS) {
+      colorId = CENTER_COORDS[indexString];
+      material = CENTER_MATERIALS[colorId];
+      cubeletType = "center"
     }
     else if (indexString in SIDE_COORDS) {
       colorId = SIDE_COORDS[indexString];
-      testMat = SIDE_MATERIALS[colorId];
+      material = SIDE_MATERIALS[colorId];
+      cubeletType = "side";
     }
     else {
-      colorId = CENTER_COORDS[indexString];
-      testMat = CENTER_MATERIALS[colorId];
+      colorId = CORNER_COORDS[indexString];
+      material = CORNER_MATERIALS[colorId];
+      cubeletType = "corner";
     }
-
-    console.log("color id:", colorId);
-    console.log("testmat:", testMat);
-    console.log("type testmat:", typeof(testMat));
 
     let sideMaterials = [];
-    for (let i = 0; i < testMat.length; i++) { 
-      sideMaterials.push(testMat[i]['material']);
+    for (let i = 0; i < material.length; i++) { 
+      sideMaterials.push(material[i]['material']);
     }
 
-    return new Cubelet(x, y, z, sideMaterials, cubeletName, cubeletType, cubeletColors, this.cubeletSize, this.spacing);
+    let shortColorId = "";
+    let colors = colorId.split("_");
+    for (let color of colors) {
+      shortColorId += color[0].toUpperCase();
+    }
+
+    return new Cubelet(x, y, z, sideMaterials, colorId, cubeletType, shortColorId, this.cubeletSize, this.spacing);
   }
 
   /**
@@ -239,8 +244,8 @@ class Cubelet extends THREE.Mesh {
     const geometry = new THREE.BoxGeometry(cubeletSize, cubeletSize, cubeletSize);
     super(geometry, material);
     this.name = name;
+    this.colors = colors;
     this.type = type;
-    this.colors = colors.join("");
     this.position.set(x * spacing, y * spacing, z * spacing);
     console.log(`making cubelet: ${this.name} \nwith colors: ${this.colors} \ntype: ${this.type}`);
   }

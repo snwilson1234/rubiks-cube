@@ -104,6 +104,11 @@ const CORNER_MATERIALS = makeIdxs(CORNER_COLORS);
 const LOWER_THRESHOLD = 0.1;
 const UPPER_THRESHOLD = 2.09;
 const FACES = ['R','L','U','D','F','B'];
+const CUBELET_TYPES = {
+  center: "CENTER",
+  side: "SIDE",
+  corner: "CORNER"
+};
 
 export {
   CUBELET_SIZE,
@@ -120,5 +125,6 @@ export {
   LOWER_THRESHOLD,
   UPPER_THRESHOLD,
 
-  FACES
+  FACES,
+  CUBELET_TYPES
 };
